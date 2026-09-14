@@ -1,0 +1,65 @@
+{
+  "name": "code-gopher/laravel-nacos",
+  "description": "Nacos configuration integration for Laravel.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "nacos",
+    "redis",
+    "dynamic-configuration"
+  ],
+  "authors": [
+    {
+      "name": "code-gopher",
+      "homepage": "https://github.com/code-gopher"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0",
+    "ext-redis": "*",
+    "guzzlehttp/guzzle": "^7.0",
+    "illuminate/support": "^8.75",
+    "illuminate/console": "^8.75",
+    "laravel/framework": "^8.75",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.6",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "CodeGopher\\LaravelNacos\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CodeGopher\\LaravelNacos\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --colors=always",
+    "lint": [
+      "@php -l src/Bootstrapper.php",
+      "@php -l src/NacosClient.php",
+      "@php -l src/NacosPullCommand.php",
+      "@php -l src/NacosRedisStore.php",
+      "@php -l src/NacosServiceProvider.php",
+      "@php -l config/nacos.php",
+      "@php -l tests/NacosBootstrapTest.php",
+      "@php -l tests/NacosClientTest.php",
+      "@php -l tests/NacosHttpBoundaryTest.php",
+      "@php -l tests/NacosPullCommandTest.php",
+      "@php -l tests/NacosRedisStoreTest.php",
+      "@php -l tests/Support/MemoryRedis.php"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CodeGopher\\LaravelNacos\\NacosServiceProvider"
+      ]
+    }
+  }
+}
