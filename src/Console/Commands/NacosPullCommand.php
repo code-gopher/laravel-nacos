@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CodeGopher\LaravelNacos;
+namespace CodeGopher\LaravelNacos\Console\Commands;
 
+use CodeGopher\LaravelNacos\Bootstrapper;
 use Illuminate\Console\Command;
 use Throwable;
 

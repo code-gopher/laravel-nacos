@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CodeGopher\LaravelNacos;
 
+use CodeGopher\LaravelNacos\Console\Commands\NacosPullCommand;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +35,10 @@ class NacosServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->publishes([
+            __DIR__ . '/../config/nacos.php' => config_path('nacos.php'),
+        ], 'nacos-config');
+
         // Application 已经启动后，嵌套 Artisan 调用不会重新经过 bootstrap/app.php，
         // 因此必须在命令真正执行前拦截动态配置快照命令。
         $this->app['events']->listen(CommandStarting::class, function (CommandStarting $event): void {

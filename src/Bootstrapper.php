@@ -154,7 +154,8 @@ final class Bootstrapper
         self::$startedAt = microtime(true);
         $nacosEnv = self::environmentReader($basePath);
         /** @var array<string, mixed> $config */
-        $config = require __DIR__.'/../config/nacos.php';
+        $projectConfig = rtrim($basePath, "\\/").'/config/nacos.php';
+        $config = require is_file($projectConfig) ? $projectConfig : __DIR__.'/../config/nacos.php';
 
         return [$config, $nacosEnv];
     }

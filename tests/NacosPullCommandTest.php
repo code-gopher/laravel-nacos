@@ -72,6 +72,15 @@ final class NacosPullCommandTest extends TestCase
         $this->assertStringNotContainsString('APP_NAME=', $output);
     }
 
+    public function testProviderPublishesThePackageConfigurationFile(): void
+    {
+        $paths = NacosServiceProvider::pathsToPublish(NacosServiceProvider::class, 'nacos-config');
+
+        $this->assertCount(1, $paths);
+        $this->assertSame($this->app->configPath('nacos.php'), array_values($paths)[0]);
+        $this->assertFileExists(array_keys($paths)[0]);
+    }
+
     public function testDirectPullAlsoUsesTheActiveLaravelContainer(): void
     {
         $payload = Bootstrapper::pull($this->app->basePath());

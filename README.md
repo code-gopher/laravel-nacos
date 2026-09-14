@@ -29,6 +29,16 @@ composer require code-gopher/laravel-nacos
 
 Laravel 会自动发现 `CodeGopher\LaravelNacos\NacosServiceProvider`。如果项目关闭了 Provider 自动发现，请在 `config/app.php` 中手动注册该类。
 
+### 发布配置文件（可选）
+
+如需在项目内维护 Nacos 配置文件，执行：
+
+```bash
+php artisan vendor:publish --tag=nacos-config
+```
+
+文件会发布到 `config/nacos.php`。启动时优先读取该文件；未发布时使用包内默认配置。
+
 ## 快速接入
 
 ### 1. 创建启动入口

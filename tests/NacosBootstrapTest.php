@@ -51,6 +51,37 @@ final class NacosBootstrapTest extends TestCase
         $this->assertSame(0, $client->fetches);
     }
 
+    public function testPublishedProjectConfigurationIsUsedDuringBootstrap(): void
+    {
+        mkdir($this->basePath().'/config', 0777, true);
+        file_put_contents($this->basePath().'/config/nacos.php', <<<'PHP'
+<?php
+
+return [
+    'enabled' => true,
+    'server_addr' => 'http://published-nacos.test:8848',
+    'namespace' => 'published-space',
+    'group' => 'PUBLISHED_GROUP',
+    'data_id' => 'published.env',
+    'cache' => [
+        'ttl' => 60,
+        'stale_ttl' => 60,
+        'lock_ttl' => 10,
+    ],
+    'failure_strategy' => 'use_stale',
+];
+PHP
+        );
+        $store = new BootstrapStoreFake(null, 'owner');
+        $client = new BootstrapClientFake($this->payload('APP_NAME=published', time()));
+        $this->configure($store, $client);
+
+        Bootstrapper::bootstrap($this->basePath());
+
+        $this->assertSame(['published.env', 'PUBLISHED_GROUP', 'published-space'], $client->arguments);
+        $this->assertSame('published', getenv('APP_NAME'));
+    }
+
     public function testMissAllowsOnlyLockHolderToFetchAndWriteRemotePayload(): void
     {
         $store = new BootstrapStoreFake(null, 'owner');
@@ -421,9 +452,10 @@ final class BootstrapStoreFake
 final class BootstrapClientFake
 {
     public $fetches = 0;
+    public $arguments = [];
     public $beforeFetch;
     private $value;
     private $fails;
     public function __construct(?array $value, bool $fails = false) { $this->value = $value; $this->fails = $fails; }
-    public function fetch(...$args) { $this->fetches++; if ($this->beforeFetch !== null) { ($this->beforeFetch)(); } if ($this->fails) { throw new \RuntimeException('synthetic-secret'); } return $this->value; }
+    public function fetch(...$args) { $this->fetches++; $this->arguments = $args; if ($this->beforeFetch !== null) { ($this->beforeFetch)(); } if ($this->fails) { throw new \RuntimeException('synthetic-secret'); } return $this->value; }
 }

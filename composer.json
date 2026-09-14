@@ -43,7 +43,7 @@
     "lint": [
       "@php -l src/Bootstrapper.php",
       "@php -l src/NacosClient.php",
-      "@php -l src/NacosPullCommand.php",
+      "@php -l src/Console/Commands/NacosPullCommand.php",
       "@php -l src/NacosRedisStore.php",
       "@php -l src/NacosServiceProvider.php",
       "@php -l config/nacos.php",
