@@ -4,3 +4,7 @@
 .env
 .env.*
 !.env.example
+!tests/Fixtures/
+!tests/Fixtures/environment/
+!tests/Fixtures/environment/.env
+!tests/Fixtures/environment/.env.testing
