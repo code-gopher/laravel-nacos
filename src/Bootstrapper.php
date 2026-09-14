@@ -101,6 +101,10 @@ final class Bootstrapper
                 return 1;
             }
         }
+        if ($command === 'vendor:publish') {
+            // 首次安装或离线部署时，发布配置模板不能依赖远端配置服务。
+            return null;
+        }
         if (in_array($command, ['config:cache', 'optimize'], true)) {
             throw new \RuntimeException(self::GUARDED_COMMAND_ERROR);
         }

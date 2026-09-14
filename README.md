@@ -38,6 +38,7 @@ php artisan vendor:publish --tag=nacos-config
 ```
 
 文件会发布到 `config/nacos.php`。启动时优先读取该文件；未发布时使用包内默认配置。
+该命令不连接 Nacos 或 Redis，可在首次安装和离线部署时执行。
 
 ## 快速接入
 

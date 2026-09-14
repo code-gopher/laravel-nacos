@@ -293,6 +293,18 @@ PHP
         $this->assertFileDoesNotExist($path);
     }
 
+    public function testVendorPublishCanRunWithoutNacosOrRedis(): void
+    {
+        $_SERVER['argv'] = ['artisan', 'vendor:publish', '--tag=nacos-config'];
+        $this->configure(
+            new BootstrapStoreFake(null, null, true),
+            new BootstrapClientFake(null, true),
+            'production'
+        );
+
+        $this->assertNull(Bootstrapper::bootstrap($this->basePath()));
+    }
+
     /** @dataProvider guardedCommands */
     public function testConfigCacheCommandsAreRejected(string $command): void
     {
